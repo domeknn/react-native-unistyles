@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Text, View } from 'react-native'
-import { Pressable as GesturePressable } from 'react-native-gesture-handler'
+import { ActivityIndicator, Text, View, TextInput as RNTextInput } from 'react-native'
+import { Pressable as GesturePressable, TextInput } from 'react-native-gesture-handler'
 import { StyleSheet, useUnistyles, withUnistyles } from 'react-native-unistyles'
 import { Screen, Section } from '../components'
 import { useE2EAction } from '../e2e/actions'
@@ -9,6 +9,7 @@ const UniGesturePressable = withUnistyles(GesturePressable)
 const UniActivityIndicator = withUnistyles(ActivityIndicator, theme => ({
     color: theme.colors.accent
 }))
+const UniTextInput = withUnistyles(TextInput)
 
 const HookDriven: React.FunctionComponent<{ isActive: boolean }> = ({ isActive }) => {
     const { theme, rt } = useUnistyles()
@@ -21,6 +22,14 @@ const HookDriven: React.FunctionComponent<{ isActive: boolean }> = ({ isActive }
         </View>
     )
 }
+
+const style = [
+    { color: '#000000' },
+    [
+      { minWidth: 200, flex: 1, paddingBottom: 2, paddingTop: 0 },
+      { fontFamily: 'System', fontWeight: '400', fontSize: 17, lineHeight: 22 },
+    ],
+];
 
 export default function WithUnistylesScreen() {
     const [isActive, setIsActive] = useState(false)
@@ -37,6 +46,14 @@ export default function WithUnistylesScreen() {
             </Section>
             <Section title="useUnistyles" description="Inline styles from the hook, re-rendered on theme change">
                 <HookDriven isActive={isActive} />
+            </Section>
+            <Section title="input component" description="Input component with mapped props">
+            <TextInput placeholder='TextInput' style={style} />
+            <TextInput placeholder='TextInput' style={[style, { color: 'red' }]} />
+            <RNTextInput placeholder='RNTextInput' style={style} />
+            <RNTextInput placeholder='RNTextInput' style={[style, { color: 'red' }]} />
+            <UniTextInput placeholder='UniTextInput' style={style} />
+            <UniTextInput placeholder='UniTextInput' style={[style, { color: 'red' }]} />
             </Section>
         </Screen>
     )
